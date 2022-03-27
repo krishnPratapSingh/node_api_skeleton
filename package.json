@@ -1,0 +1,40 @@
+{
+  "name": "node_crud_test",
+  "version": "1.0.0",
+  "description": "CRUD API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmplebara/Test_Nodejs.git"
+  },
+  "keywords": [
+    "crud",
+    "api"
+  ],
+  "author": "krishna singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gmplebara/Test_Nodejs/issues"
+  },
+  "homepage": "https://github.com/gmplebara/Test_Nodejs#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.2",
+    "chalk": "^5.0.1",
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
+    "express": "^4.17.3",
+    "express-validator": "^6.14.0",
+    "extend": "^3.0.2",
+    "helmet": "^5.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.8",
+    "nodemon": "^2.0.15",
+    "tracer": "^1.1.5",
+    "winston": "^3.6.0"
+  }
+}
