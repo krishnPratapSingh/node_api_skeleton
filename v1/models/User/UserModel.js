@@ -1,13 +1,12 @@
 import UserSchema from "./UserSchema";
 
 const queries = {
- 
   // CRUD METHODS
 
   async create(item) {
     return await UserSchema.getModel().create(item);
   },
-   
+
   async get(id) {
     return await UserSchema.getModel().findOne({ _id: id });
   },
@@ -16,10 +15,14 @@ const queries = {
     return await UserSchema.getModel().find();
   },
 
-  async update(item) { 
+  async update(item) {
     delete item.password;
 
-    return await UserSchema.getModel().findOneAndUpdate({ _id: item._id }, item, {'new': true});
+    return await UserSchema.getModel().findOneAndUpdate(
+      { _id: item._id },
+      item,
+      { new: true }
+    );
   },
 
   async delete(id) {
@@ -29,10 +32,9 @@ const queries = {
   async findOne(item) {
     return await UserSchema.getModel().findOne(item).lean();
   },
-
 };
 
 export default {
   ...UserSchema,
-  ...queries
+  ...queries,
 };
