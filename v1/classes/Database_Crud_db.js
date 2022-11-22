@@ -3,12 +3,13 @@ import mongoose from "mongoose";
 // Logging
 import Logger from "./Logger";
 // Properties
-import properties from "../properties.js";
+import properties from "../../properties.js";
 
 // Start Import Models
 
-import ProductModel from "../v1/models/Product/ProductModel";
-import UserModel from "../v1/models/User/UserModel";
+import ProductModel from "../models/Product/ProductModel";
+import UserModel from "../models/User/UserModel";
+import PermissionModel from "../models/Permission/PermissionModel";
 
 // End Import Models
 
@@ -24,9 +25,10 @@ class Database {
 
     // Start Init Models
 
-		ProductModel.init();
-		UserModel.init();
- // End Init Models
+    ProductModel.init();
+    UserModel.init();
+    PermissionModel.init();
+    // End Init Models
   }
 
   /**
@@ -42,7 +44,7 @@ class Database {
     } catch (err) {
       Logger.error(`Failed connection to the DB: ${err.message}`);
       Logger.error(err);
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       await this.authenticate();
     }
   }

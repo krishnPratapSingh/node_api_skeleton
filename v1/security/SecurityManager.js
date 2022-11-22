@@ -5,84 +5,90 @@ import helmet from "helmet";
 // Properties
 import properties from "../../properties";
 // Errors
-import ErrorManager from "../../classes/ErrorManager";
-import Errors from "../../classes/Errors";
+import ErrorMessages from "../classes/ErrorMessages";
+// model
+import PermissionModel from "../models/Permission/PermissionModel";
 
 // Middleware JWT
-export const authorize = (roles = []) => {
-  // Roles param can be a single role string (e.g. Role.User or 'User')
-  // or an array of roles (e.g. [Role.Admin, Role.User] or ['Admin', 'User'])
-  if (typeof roles === "string") {
-    roles = [roles];
-  }
+export const authenticate = () => {
+  console.log("inside authenticate");
 
   return [
     // Authenticate JWT token and attach user to request object (req.user)
     async (req, res, next) => {
-      let token =
-        req.headers.authorization &&
-        req.headers.authorization.replace("Bearer ", "");
+      try {
+        let token =
+          req.headers.authorization &&
+          req.headers.authorization.replace("Bearer ", "");
 
-      if (!token) {
-        const safeErr = ErrorManager.getSafeError(
-          new Errors.INVALID_AUTH_HEADER()
-        );
-        res.status(safeErr.status).json(safeErr);
-      } else {
-        let decodedUser = null;
-        try {
-          decodedUser = jsonwebtoken.verify(token, properties.tokenSecret);
-        } catch (err) {
-          // Token not valid
-          const safeErr = ErrorManager.getSafeError(new Errors.JWT_INVALID());
-          return res.status(safeErr.status).json(safeErr);
-        }
-
-        if (decodedUser && hasRole(roles, decodedUser)) {
-          req.user = decodedUser;
-          next();
+        if (!token) {
+          throw Error(JSON.stringify(ErrorMessages.INVALID_AUTH_HEADER));
         } else {
-          const safeErr = ErrorManager.getSafeError(new Errors.UNAUTHORIZED());
-          res.status(safeErr.status).json(safeErr);
+          let decodedUser = null;
+          try {
+            decodedUser = jsonwebtoken.verify(token, properties.tokenSecret);
+          } catch (err) {
+            throw Error(JSON.stringify(ErrorMessages.JWT_INVALID));
+          }
+
+          if (decodedUser) {
+            req.user = decodedUser;
+            console.log("just before next");
+
+            next();
+          } else {
+            throw Error(JSON.stringify(ErrorMessages.UNAUTHORIZED));
+          }
         }
+      } catch (err) {
+        console.log("error in authenticate ==>>", err);
+        res.send(JSON.parse(err.message));
       }
-    }
+    },
   ];
 };
 
-export const initSecurity = app => {
+export const initSecurity = (app) => {
   app.use(helmet());
   app.use(cors());
 };
 
 // ---------------- UTILS FUNCTIONS ---------------- //
 
-/**
- * Check if user has role
- * @param {*} roles String or array of roles to check
- * @param {*} user Current logged user
- */
-var hasRole = function(roles, user) {
-  return (
-    roles == undefined ||
-    (user != undefined && roles.length == 0) ||
-    (user != undefined && roles.indexOf("PUBLIC") != -1) ||
-    (user != undefined && user.roles.indexOf("ADMIN") != -1) ||
-    (user != undefined && findOne(roles, user.roles))
-  );
-};
-
-/**
- * Find value in array
- * @param {*} array1
- * @param {*} array2
- */
-var findOne = function(array1, array2) {
-  for (var i in array1) {
-    for (var j in array2) {
-      if (array1[i] == array2[j]) return true;
-    }
+export const authorize = (permissions) => {
+  if (typeof permissions === "string") {
+    permissions = [permissions];
   }
+  console.log("inside authorize", permissions);
 
-  return false;
+  return async (req, res, next) => {
+    try {
+      let allowed = false;
+      console.log("inside has permission");
+      const permissionsAllocated = await PermissionModel.getPermissionByUserId(
+        req.user._id
+      );
+      // const permissionsAllocated = [
+      //   "product_create",
+      //   "product_read",
+      //   "product_update",
+      //   "product_delete",
+      // ];
+      console.log("permissions==>>", permissions);
+      const permissionRequired = permissions;
+      if (
+        permissionRequired.every((val) =>
+          permissionsAllocated.permissions.includes(val)
+        )
+      ) {
+        console.log("hasPermission => true");
+        next();
+      } else {
+        throw Error(JSON.stringify(ErrorMessages.NOT_ENOUGH_PERMISSION));
+      }
+    } catch (err) {
+      console.log("error in hasPermission ==>", err);
+      res.send(JSON.parse(err.message));
+    }
+  };
 };

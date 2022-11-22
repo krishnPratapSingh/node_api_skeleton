@@ -8,11 +8,10 @@ import jsonwebtoken from "jsonwebtoken";
 import UserServices from "../services/UserServices";
 
 // Errors
-import ErrorManager from "../../classes/ErrorManager";
-import Errors from "../../classes/Errors";
+import ErrorManager from "../classes/ErrorManager";
+import Errors from "../classes/Errors";
 
 const securityControllers = {
-
   /**
    * Login function
    *
@@ -23,15 +22,15 @@ const securityControllers = {
       let params = req.body;
       // Retrieve user
       let user = await UserServices.getByUsernameAndPassword(
-        params.username,
+        params.email,
         params.password
       );
       if (user) {
         // Create token
         var token = jsonwebtoken.sign(user, Properties.tokenSecret, {
-          expiresIn: 10800 //3 hours
+          expiresIn: 10800, //3 hours
         });
-        user.token = token;
+        user.api_token = token;
         user.password = undefined;
         res.send(user);
       } else {
@@ -50,7 +49,8 @@ const securityControllers = {
    */
   verifyToken: async (req, res) => {
     try {
-      let token = req.body.token;
+      let token = req.body.api_token;
+      console.log("token ==>>", token);
       if (token) {
         let decoded = null;
         try {
@@ -58,11 +58,16 @@ const securityControllers = {
         } catch (err) {
           return res.json({
             success: false,
-            mesage: "Failed to authenticate token"
+            mesage: "Failed to authenticate token",
           });
         }
-
-        res.json(decoded);
+        console.log("deocded ==>>", decoded);
+        console.log("deocded ==>>", decoded.email);
+        const username = decoded.username;
+        let user = await UserServices.getByUsername(username);
+        console.log("user ==>>", user);
+        user.api_token = token;
+        res.json(user);
       } else {
         throw new Errors.NO_TOKEN();
       }
@@ -89,13 +94,13 @@ const securityControllers = {
 
       await UserServices.updatePassword(req.user._id, req.body.passwordNew);
       res.json({
-        success: true
+        success: true,
       });
     } catch (err) {
       const safeErr = ErrorManager.getSafeError(err);
       res.status(400).json(safeErr);
     }
-  }
+  },
 };
 
 export default securityControllers;

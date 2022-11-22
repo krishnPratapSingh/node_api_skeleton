@@ -8,7 +8,7 @@ import path from "path";
 import Logger from "./Logger";
 
 // Properties
-import properties from "../properties.js";
+import properties from "../../properties.js";
 
 // Security
 import cors from "cors";
@@ -18,9 +18,10 @@ import helmet from "helmet";
 import Database_Crud_db from "./Database_Crud_db.js";
 
 // Routes
-import SecurityRoutes from "../v1/routes/SecurityRoutes";
-import UserRoutes from "../v1/routes/UserRoutes";
-import ProductRoutes from "../v1/routes/ProductRoutes";
+import SecurityRoutes from "../routes/SecurityRoutes";
+import UserRoutes from "../routes/UserRoutes";
+import ProductRoutes from "../routes/ProductRoutes";
+import PublicRoutes from "../routes/PublicRoutes";
 
 class Server {
   constructor() {
@@ -32,7 +33,7 @@ class Server {
     Logger.info("Starting Server");
 
     // Start Init Database
-	  Database_Crud_db.init();
+    Database_Crud_db.init();
     // End Init Database
 
     // Add parser
@@ -43,7 +44,7 @@ class Server {
     // Securitiy
     this.app.use(helmet());
     this.app.use(cors());
-    
+
     // Start App Server
     const server = http.Server(this.app);
     this.app.use(express.static(properties.publicPath));
@@ -54,7 +55,7 @@ class Server {
     this.app.use("/v1", SecurityRoutes); // for security
     this.app.use("/v1", ProductRoutes); // for products
     this.app.use("/v1", UserRoutes); // for users
-    
+    this.app.use("/v1", PublicRoutes); // for public
   }
 }
 

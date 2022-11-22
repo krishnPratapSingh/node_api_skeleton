@@ -8,11 +8,15 @@ import ErrorMessages from "./ErrorMessages";
 const Errors = Object.entries(ErrorMessages).reduce((errors, [k, v]) => {
   const name = k;
   errors[k] = class k extends SafeError {
-    constructor(message = v.message, status = v.status) {
+    constructor(
+      message = v.message,
+      success = v.success,
+      httpStatusCode = v.httpStatusCode
+    ) {
       super({
+        success: success,
         message: message,
-        status: status,
-        name: name
+        httpStatusCode: httpStatusCode,
       });
     }
   };

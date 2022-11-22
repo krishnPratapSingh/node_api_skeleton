@@ -1,5 +1,8 @@
-
-const { check, validationResult } = require("express-validator");
+const {
+  check,
+  validationResult,
+  buildCheckFunction,
+} = require("express-validator");
 
 function createProductValidationRules() {
   return [
@@ -8,9 +11,7 @@ function createProductValidationRules() {
       .escape()
       .notEmpty()
       .withMessage("Please input a valid product name."),
-    check("quantity")
-      .isNumeric()
-      .withMessage("Please input a valid quantity."),
+    check("quantity").isNumeric().withMessage("Please input a valid quantity."),
     check("sku")
       .trim()
       .escape()
@@ -19,6 +20,15 @@ function createProductValidationRules() {
       .withMessage("Please input a valid sku."),
   ];
 }
+
+// function checkAndAddPermissions(request, response, next) {
+//   try {
+//     request.scope = ["read", "write"];
+//     return next();
+//   } catch (err) {
+//     console.log("error in checkAndAddPermissions");
+//   }
+// }
 
 function validationHandler(request, response, next) {
   const errors = validationResult(request);

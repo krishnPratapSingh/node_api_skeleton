@@ -1,9 +1,9 @@
 // Database
-import Database from "../../../classes/Database_Crud_db";
+import Database from "../../classes/Database_Crud_db";
 import mongoose from "mongoose";
 
 // Logger
-import Logger from "../../../classes/Logger";
+import Logger from "../../classes/Logger";
 
 const userModel = {
   /**
@@ -13,35 +13,39 @@ const userModel = {
     const db = Database.getConnection();
 
     /**
-      * User
-      */
+     * User
+     */
     const userSchema = new mongoose.Schema({
-      mail: {
-        type: "String"
+      email: {
+        type: "String",
       },
-      name: {
-        type: "String"
+      first_name: {
+        type: "String",
+      },
+      last_name: {
+        type: "String",
       },
       password: {
-        type: "String", 
-        required: true
+        type: "String",
+        required: true,
       },
-      roles: [{
-        type: "String"
-      }],
+      roles: [
+        {
+          type: "String",
+        },
+      ],
       surname: {
-        type: "String"
+        type: "String",
       },
       username: {
-        type: "String", 
-        required: true
+        type: "String",
+        required: true,
       },
       // RELATIONS
-      
-      
+
       // EXTERNAL RELATIONS
       /*
-      */
+       */
     });
 
     userModel.setModel(db.connection.model("User", userSchema));
@@ -53,7 +57,7 @@ const userModel = {
   /**
    * Set Model
    */
-  setModel: model => {
+  setModel: (model) => {
     userModel.model = model;
   },
 
@@ -67,7 +71,7 @@ const userModel = {
   /**
    * Create ADMIN user if it not exists
    */
-   createAdminUser: async () => {
+  createAdminUser: async () => {
     const count = await userModel.model.collection.countDocuments();
     if (count == 0) {
       Logger.info("Creating admin user");
@@ -75,17 +79,16 @@ const userModel = {
         username: "lebara_admin",
         password:
           "$2a$12$W7gFYcuJh2uLN0/zsPAo4u8ZenbulAzh79YcMffWp2fqhUv46dCOK",
-        roles: ["ADMIN"]
+        roles: ["ADMIN"],
       });
-      const adminUser  = await admin.save();
-      if(adminUser){
+      const adminUser = await admin.save();
+      if (adminUser) {
         Logger.info("Admin user Created:");
         Logger.info(`username: ${adminUser.username}`);
         Logger.info("password: admin");
       }
     }
-  }
-
+  },
 };
 
 export default userModel;

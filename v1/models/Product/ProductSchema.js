@@ -1,5 +1,5 @@
 // Database
-import Database from "../../../classes/Database_Crud_db";
+import Database from "../../classes/Database_Crud_db";
 import mongoose from "mongoose";
 
 const productModel = {
@@ -10,28 +10,26 @@ const productModel = {
     const db = Database.getConnection();
 
     /**
-      * Product
-      */
+     * Product
+     */
     const productSchema = new mongoose.Schema({
-      
       name: {
         type: "String",
-        required: true
+        required: true,
       },
       quantity: {
         type: "Number",
-        required: true
+        required: true,
       },
       sku: {
         type: "String",
-        required: true
+        required: true,
       },
       // RELATIONS
-      
-      
+
       // EXTERNAL RELATIONS
       /*
-      */
+       */
     });
 
     productModel.setModel(db.connection.model("Product", productSchema));
@@ -42,7 +40,7 @@ const productModel = {
   /**
    * Set Model
    */
-  setModel: model => {
+  setModel: (model) => {
     productModel.model = model;
   },
 
@@ -52,8 +50,6 @@ const productModel = {
   getModel: () => {
     return productModel.model;
   },
-
-
 };
 
-export default productModel
+export default productModel;

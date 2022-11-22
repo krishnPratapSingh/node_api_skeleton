@@ -2,14 +2,13 @@
 import UserServices from "../services/UserServices";
 
 // Errors
-import Errors from "../../classes/Errors";
-import ErrorManager from "../../classes/ErrorManager";
+import Errors from "../classes/Errors";
+import ErrorManager from "../classes/ErrorManager";
 
 const UserController = {
-
   // CRUD METHODS
 
-   create: async (req, res) => {
+  create: async (req, res) => {
     try {
       const result = await UserServices.create(req.body);
       res.json(result);
@@ -18,7 +17,7 @@ const UserController = {
       res.status(safeErr.status).json(safeErr);
     }
   },
-   
+
   delete: async (req, res) => {
     try {
       const result = await UserServices.delete(req.params.id);
@@ -38,7 +37,7 @@ const UserController = {
       res.status(safeErr.status).json(safeErr);
     }
   },
-  
+
   list: async (req, res) => {
     try {
       const result = await UserServices.list();
@@ -70,14 +69,13 @@ const UserController = {
       }
       await UserServices.updatePassword(req.params.id, req.body.passwordNew);
       res.send({
-        success: true
+        success: true,
       });
     } catch (err) {
       const safeErr = ErrorManager.getSafeError(err);
       res.status(safeErr.status).json(safeErr);
     }
-  }
+  },
 };
 
-export default UserController
-
+export default UserController;

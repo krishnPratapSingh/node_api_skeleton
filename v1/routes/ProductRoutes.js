@@ -5,7 +5,7 @@ const router = express.Router();
 import Properties from "../../properties";
 
 // Security
-import { authorize } from "../security/SecurityManager";
+import { authenticate, authorize } from "../security/SecurityManager";
 
 // Controller
 import ProductController from "../controllers/ProductController";
@@ -17,10 +17,31 @@ import { validateProductId } from "../middlewares/validators/Product/validatePro
 
 const baseUrl = `${Properties.api}/product`;
 
-router.post(baseUrl + "", authorize([]), validateCreateProduct, ProductController.create);
-router.delete(baseUrl + "/:id", authorize([]), validateProductId, ProductController.delete);
-router.get(baseUrl + "/:id", authorize([]), validateProductId, ProductController.get);
+router.post(
+  baseUrl + "",
+  authenticate(),
+  authorize(["product_create", "product_read"]),
+  validateCreateProduct,
+  ProductController.create
+);
+router.delete(
+  baseUrl + "/:id",
+  authorize([]),
+  validateProductId,
+  ProductController.delete
+);
+router.get(
+  baseUrl + "/:id",
+  authorize([]),
+  validateProductId,
+  ProductController.get
+);
 router.get(baseUrl + "", authorize([]), ProductController.list);
-router.post(baseUrl + "/:id", authorize([]), validateUpdateProduct, ProductController.update);
+router.post(
+  baseUrl + "/:id",
+  authorize([]),
+  validateUpdateProduct,
+  ProductController.update
+);
 
 export default router;
