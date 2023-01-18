@@ -10,6 +10,7 @@ import properties from "../../properties.js";
 import ProductModel from "../models/Product/ProductModel";
 import UserModel from "../models/User/UserModel";
 import PermissionModel from "../models/Permission/PermissionModel";
+import ContainerJobModel from "../models/ContainerJobs/ContainerModel";
 
 // End Import Models
 
@@ -28,6 +29,7 @@ class Database {
     ProductModel.init();
     UserModel.init();
     PermissionModel.init();
+    ContainerJobModel.init();
     // End Init Models
   }
 

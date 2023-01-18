@@ -6,6 +6,8 @@ module.exports = {
   api: process.env.NODE_API || "/api",
 
   // azure
-  accountName: process.env.ACCOUNT_NAME || "",
-  accountKey: process.env.ACCOUNT_KEY || "",
+  accountName: process.env.ACCOUNT_NAME || "flutinprerecordstorein01",
+  accountKey:
+    process.env.ACCOUNT_KEY ||
+    "x8o9TQpKDHoNlsbRw/lorvnAFxPn2D2A+DP6PptKz5N4ijvlF44VQP1Xa7ZYbyaNeQe/QzfobeE5AzLkQNFMIQ==",
 };

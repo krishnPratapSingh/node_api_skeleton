@@ -22,6 +22,7 @@ import SecurityRoutes from "../routes/SecurityRoutes";
 import UserRoutes from "../routes/UserRoutes";
 import ProductRoutes from "../routes/ProductRoutes";
 import PublicRoutes from "../routes/PublicRoutes";
+import ContainerJobRoutes from "../routes/ContainerJobRoutes";
 
 class Server {
   constructor() {
@@ -55,6 +56,8 @@ class Server {
     this.app.use("/v1", SecurityRoutes); // for security
     this.app.use("/v1", ProductRoutes); // for products
     this.app.use("/v1", UserRoutes); // for users
+    this.app.use("/v1", UserRoutes); // for users
+    this.app.use("/v1", ContainerJobRoutes); // for data migration
     this.app.use("/v1", PublicRoutes); // for public
   }
 }
