@@ -40,7 +40,8 @@ class Database {
     Logger.info("Authenticating to the databases...");
     try {
       this.dbConnection_crud_db = await mongoose.connect(
-        "mongodb://" + properties.crud_db_dbUrl,
+        // "mongodb://" +
+        properties.crud_db_dbUrl,
         { useNewUrlParser: true }
       );
     } catch (err) {

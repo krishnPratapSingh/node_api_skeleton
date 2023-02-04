@@ -11,6 +11,10 @@ const queries = {
     return await ContainerSchema.getModel().findOne({ _id: id });
   },
 
+  async getByObj(queryObj) {
+    return await ContainerSchema.getModel().findOne(queryObj);
+  },
+
   async list() {
     return await ContainerSchema.getModel().find();
   },

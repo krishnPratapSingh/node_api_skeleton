@@ -26,14 +26,14 @@ const ContainerJobController = {
     // google api key : AIzaSyCz1rqxgSB7GcABgisVx45fVSEBBjkw-M8
     try {
       const containers = await ContainerJobModel.listWithFilter({
-        jobStatus: "scheduled",
+        jobStatus: "pending",
       });
       console.log("containers ==>>", containers);
       const googleAccessToken =
-        "ya29.a0AX9GBdWiPdPMa7w0NfZ9IQfT4bn_WlGcZwareCykuT3fhp8tN8dvGqzOd8skZUDiukGGD8J-56-HbIrWt7gdJcBaWmUNhx4YXPVXbcATdtaZgyndmw0uYeyKdF4sbUKr3OjhuDU5OihqFWXZM6CQJZAShUe1aCgYKAc8SARASFQHUCsbCbXS_6a65ONwQ86-h7uZlCQ0163";
+        "ya29.a0AVvZVspkhlc2MI--RUPngkfgRouqskLU0QdlS4Hi4jmrgCkCcdYqi3fBptPV3F53KZ3fUJ-JEYuoX-LN22VCJtSyiciduQE_yFHgDy-XcjGx5Yq0o8dfFA2f4-v9eg7it76AP6UVvSyygUlT7WzwFXqoFJkPEckaCgYKAe4SAQASFQGbdwaItEamlrcSa-29ZEhaAvZiCg0166";
       const azureSAS =
-        "?sv=2021-06-08&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2023-01-18T14:56:47Z&st=2023-01-18T06:56:47Z&spr=https&sig=zqI0T6POoPCff91s3hRmNLA2kd5WRtbIZLspNHezC0w%3D";
-
+        "?sv=2021-06-08&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2023-02-23T16:10:27Z&st=2023-01-23T08:10:27Z&spr=https&sig=R3mjZY%2BLewYVNHKn%2FrQ9553Ts9MFl%2FQX7Qwwm1nQbFY%3D";
+      var i = 1;
       for await (const container of containers) {
         console.log("container ==>>", container);
         const response = await axios({
@@ -45,16 +45,16 @@ const ContainerJobController = {
           data: {
             description: container.containerName,
             status: "ENABLED",
-            projectId: "flutin-test",
+            projectId: "flutin-prod-01",
             schedule: {
               scheduleStartDate: {
-                day: 17,
-                month: 1,
+                day: 2,
+                month: 2,
                 year: 2023,
               },
               startTimeOfDay: {
-                hours: 8,
-                minutes: 16,
+                hours: 1,
+                minutes: 15,
               },
             },
             transferSpec: {
@@ -66,11 +66,14 @@ const ContainerJobController = {
                 },
               },
               gcsDataSink: {
-                bucketName: `flutin-us-01`,
-                path: `azure/${container.containerName}/`,
+                bucketName: `flutin_prod_in_01`,
+                path: `${container.containerName}/`,
               },
               transferOptions: {
                 deleteObjectsFromSourceAfterTransfer: false,
+                metadataOptions: {
+                  storageClass: "STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT",
+                },
               },
             },
           },
@@ -81,12 +84,28 @@ const ContainerJobController = {
             { containerName: container.containerName },
             { jobStatus: "scheduled" }
           );
+          console.log(`${i} jobs scheduled of ${containers.length}`);
+          i++;
         }
       }
     } catch (err) {
       console.log("error in createJobs ==>>", err);
       console.log("error in createJobs error ==>>", err.response.data.error);
     }
+  },
+
+  syncBucket: async (req, res) => {
+    try {
+      const result = ContainerJobServices.syncBucketJobs();
+      res.json({ success: true });
+    } catch (err) {
+      console.log("error in syncBucket ==>>");
+    }
+  },
+
+  makePublic: async (req, res) => {
+    try {
+    } catch (err) {}
   },
 };
 

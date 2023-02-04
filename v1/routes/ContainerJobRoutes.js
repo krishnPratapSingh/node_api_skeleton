@@ -14,5 +14,7 @@ router.post(
 );
 
 router.post(baseUrl + "/create/jobs", ContainerJobController.createJobs);
+router.post(baseUrl + "/sync/bucket/jobs", ContainerJobController.syncBucket);
+router.post(baseUrl + "/make/object/public", ContainerJobController.makePublic);
 
 export default router;

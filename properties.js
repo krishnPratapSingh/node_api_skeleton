@@ -1,5 +1,8 @@
 module.exports = {
-  crud_db_dbUrl: (process.env.DB_HOST || "localhost") + ":27017/crud_db",
+  // crud_db_dbUrl: (process.env.DB_HOST || "localhost") + ":27017/crud_db",
+  // azure
+  crud_db_dbUrl:
+    "mongodb+srv://flutinUser:flutinPwd@flutin-dev.hcstm.mongodb.net/flutin_dev?authSource=admin&replicaSet=atlas-10583w-shard-0&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true",
   publicPath: "public",
   port: process.env.NODE_PORT || 3000,
   tokenSecret: "Insert Your Secret Token",
