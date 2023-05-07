@@ -13,9 +13,27 @@ const permissionModel = {
      * Product
      */
     const permissionSchema = new mongoose.Schema({
-      permissions: {
-        type: "Array",
-        required: true,
+      liveSession: {
+        create: {
+          type: Boolean,
+          default: false,
+          required: true,
+        },
+        read: {
+          type: Boolean,
+          default: false,
+          required: true,
+        },
+        update: {
+          type: Boolean,
+          default: false,
+          required: true,
+        },
+        delete: {
+          type: Boolean,
+          default: false,
+          required: true,
+        },
       },
 
       // RELATIONS
