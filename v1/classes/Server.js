@@ -1,6 +1,6 @@
 // Express
-import express from "express";
-import http from "http";
+import express, { response } from "express";
+import http, { request } from "http";
 import bodyParser from "body-parser";
 import path from "path";
 
@@ -23,9 +23,23 @@ import UserRoutes from "../routes/UserRoutes";
 import ProductRoutes from "../routes/ProductRoutes";
 import PublicRoutes from "../routes/PublicRoutes";
 
+// Response validation midddleware
+import validateResponse from "./AjvResponseValidation";
+
 class Server {
   constructor() {
     this.app = express();
+    this.cors = {
+      origin: "http://localhost:3011", // Allow requests from this origin
+      methods: "GET,POST", // Allow specified HTTP methods
+      allowedHeaders: "Content-Type,Authorization", // Allow specified headers
+      exposedHeaders: "Content-Length", // Expose specified headers
+      credentials: true, // Enable sending cookies and HTTP authentication
+      maxAge: 86400, // Cache preflight requests for 24 hours
+      preflightContinue: false, // Disable handling of preflight OPTIONS requests
+      optionsSuccessStatus: 204, // Return 204 No Content for OPTIONS requests
+    };
+    this.r = express.Router();
   }
 
   // Start the server
@@ -43,7 +57,10 @@ class Server {
 
     // Securitiy
     this.app.use(helmet());
-    this.app.use(cors());
+    this.app.use(cors(this.cors));
+
+    // Validate Response
+    // this.app.use(validateResponse);
 
     // Start App Server
     const server = http.Server(this.app);

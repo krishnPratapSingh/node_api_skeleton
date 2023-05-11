@@ -11,12 +11,15 @@ import UserServices from "../services/UserServices";
 import ErrorManager from "../classes/ErrorManager";
 import Errors from "../classes/Errors";
 
+// Response validation schema
+import schema from "../middlewares/validators/Security/responseSchema";
+
 const securityControllers = {
   /**
    * Login function
    *
    */
-  login: async (req, res) => {
+  login: async (req, res, next) => {
     try {
       // Get parameters from post request
       let params = req.body;
@@ -32,7 +35,14 @@ const securityControllers = {
         });
         user.api_token = token;
         user.password = undefined;
-        res.send(user);
+
+        // schema for response validation
+        res.schema = schema.login;
+        console.log("user ==>>", user._id);
+        res.data = user;
+        console.log("res.schema c==>>", res.schema);
+        // res.send(user);
+        next();
       } else {
         // Error login
         throw new Errors.INVALID_LOGIN();
