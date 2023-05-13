@@ -38,10 +38,7 @@ const securityControllers = {
 
         // schema for response validation
         res.schema = schema.login;
-        console.log("user ==>>", user._id);
         res.data = user;
-        console.log("res.schema c==>>", res.schema);
-        // res.send(user);
         next();
       } else {
         // Error login

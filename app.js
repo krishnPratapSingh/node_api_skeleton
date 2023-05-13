@@ -9,7 +9,7 @@ const start = async () => {
   } catch (err) {
     Logger.error(`Error inside app start: ${err.message}`);
     throw err;
-    process.exit(1);
+    // process.exit(1);
   }
 };
 

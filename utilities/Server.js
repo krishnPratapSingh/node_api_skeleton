@@ -8,7 +8,7 @@ import path from "path";
 import Logger from "./Logger";
 
 // Properties
-import properties from "../properties.js";
+import Properties from "../properties";
 
 // Security
 import cors from "cors";
@@ -21,6 +21,7 @@ import Database_Crud_db from "./Database_Crud_db.js";
 import SecurityRoutes from "../v1/routes/SecurityRoutes";
 import UserRoutes from "../v1/routes/UserRoutes";
 import ProductRoutes from "../v1/routes/ProductRoutes";
+import LiveSessionRoutes from "../v1/routes/LiveSessionRoutes";
 import PublicRoutes from "../v1/routes/PublicRoutes";
 
 class Server {
@@ -58,15 +59,16 @@ class Server {
 
     // Start App Server
     const server = http.Server(this.app);
-    this.app.use(express.static(properties.publicPath));
+    this.app.use(express.static(Properties.publicPath));
 
-    await server.listen(properties.port);
-    Logger.info("Server started on port " + properties.port);
+    await server.listen(Properties.port);
+    Logger.info("Server started on port " + Properties.port);
 
-    this.app.use("/v1", SecurityRoutes); // for security
-    this.app.use("/v1", ProductRoutes); // for products
-    this.app.use("/v1", UserRoutes); // for users
-    this.app.use("/v1", PublicRoutes); // for public
+    this.app.use(`${Properties.api}/v1`, SecurityRoutes); // for security
+    this.app.use(`${Properties.api}/v1`, LiveSessionRoutes); // for livsession
+    this.app.use(`${Properties.api}/v1`, ProductRoutes); // for products
+    this.app.use(`${Properties.api}/v1`, UserRoutes); // for users
+    this.app.use(`${Properties.api}/v1`, PublicRoutes); // for public
   }
 }
 

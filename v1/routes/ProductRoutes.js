@@ -15,7 +15,7 @@ import { validateCreateProduct } from "../middlewares/validators/Product/CreateP
 import { validateUpdateProduct } from "../middlewares/validators/Product/UpdateProductMiddleware";
 import { validateProductId } from "../middlewares/validators/Product/validateProductIdMiddleware";
 
-const baseUrl = `${Properties.api}/product`;
+const baseUrl = `/product`;
 
 router.post(
   baseUrl + "",

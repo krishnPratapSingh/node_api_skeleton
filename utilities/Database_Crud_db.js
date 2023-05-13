@@ -10,6 +10,7 @@ import properties from "../properties.js";
 import ProductModel from "../v1/models/Product/ProductModel";
 import UserModel from "../v1/models/User/UserModel";
 import PermissionModel from "../v1/models/Permission/PermissionModel";
+import LiveSessionModel from "../v1/models/LiveSession/LiveSessionModel";
 
 // End Import Models
 
@@ -28,6 +29,7 @@ class Database {
     ProductModel.init();
     UserModel.init();
     PermissionModel.init();
+    LiveSessionModel.init();
     // End Init Models
   }
 

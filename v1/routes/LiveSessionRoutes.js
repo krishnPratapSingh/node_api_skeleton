@@ -10,36 +10,45 @@ import { authenticate, authorize } from "../security/SecurityManager";
 // Controller
 import LiveSessionController from "../controllers/LiveSessionController";
 
-// Validator
-import monthlyEventsCount from "../middlewares/validators/LiveSession/requestValidation";
+// Response validator
+import validateResponse from "../../utilities/AjvResponseValidation";
 
-const baseUrl = `${Properties.api}/liveSession`;
+const baseUrl = `/liveSession`;
+
+router.post(
+  baseUrl + "/:id",
+  authenticate(),
+  authorize([]),
+  LiveSessionController.update
+);
 
 router.get(
   baseUrl + "/monthlyEventsCount",
   authenticate(),
   authorize([]),
-  monthlyEventsCount,
-  LiveSessionController.monthlyEventsCount
+  LiveSessionController.monthlyEventsCount,
+  validateResponse
 );
-router.delete(
-  baseUrl + "/:id",
-  authorize([]),
-  validateProductId,
-  ProductController.delete
-);
+
 router.get(
   baseUrl + "/:id",
+  authenticate(),
   authorize([]),
-  validateProductId,
-  ProductController.get
+  LiveSessionController.get
 );
-router.get(baseUrl + "", authorize([]), ProductController.list);
-router.post(
+
+router.delete(
   baseUrl + "/:id",
+  authenticate(),
   authorize([]),
-  validateUpdateProduct,
-  ProductController.update
+  LiveSessionController.delete
+);
+
+router.get(
+  baseUrl + "",
+  authenticate(),
+  authorize([]),
+  LiveSessionController.list
 );
 
 export default router;

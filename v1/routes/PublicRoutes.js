@@ -7,7 +7,7 @@ import Properties from "../../properties";
 // Controller
 import UserController from "../controllers/UserController";
 
-const baseUrl = `${Properties.api}`;
+const baseUrl = ``;
 
 router.get(baseUrl, function (req, res) {
   res.send({ status: "ok" });

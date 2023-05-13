@@ -1,5 +1,5 @@
 module.exports = {
-  crud_db_dbUrl: (process.env.DB_HOST || "localhost") + ":27017/crud_db",
+  crud_db_dbUrl: (process.env.DB_HOST || "localhost") + ":27017/flutinLive_db",
   publicPath: "public",
   port: process.env.NODE_PORT || 3000,
   tokenSecret: "Insert Your Secret Token",

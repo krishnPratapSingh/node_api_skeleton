@@ -13,7 +13,7 @@ import SecurityController from "../controllers/SecurityController";
 // Response validator
 import validateResponse from "../../utilities/AjvResponseValidation";
 
-const baseUrl = `${Properties.api}`;
+const baseUrl = ``;
 router.post(baseUrl + "/login", SecurityController.login, validateResponse);
 router.post(baseUrl + "/verifyToken", SecurityController.verifyToken);
 router.post(

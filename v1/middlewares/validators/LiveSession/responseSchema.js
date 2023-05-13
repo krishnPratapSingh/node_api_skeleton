@@ -1,19 +1,29 @@
 const schema = {
   monthlyEventsCount: {
-    type: "object",
-    properties: {
-      name: { type: "string" },
-      age: { type: "number" },
-      address: {
+    type: "array",
+    items: [
+      {
         type: "object",
         properties: {
-          city: { type: "string" },
-          locality: { type: "string" },
-          pinCode: { type: "number" },
+          _id: {
+            type: "object",
+            properties: {
+              year: {
+                type: "integer",
+              },
+              month: {
+                type: "integer",
+              },
+            },
+          },
+          numberOfEvents: {
+            type: "integer",
+          },
         },
-        required: ["city", "locality", "pinCode"],
       },
-    },
-    required: ["name", "age", "address"],
+    ],
+    additionalProperties: false,
   },
 };
+
+export default schema;
