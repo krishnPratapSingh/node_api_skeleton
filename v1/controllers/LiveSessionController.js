@@ -77,7 +77,8 @@ const LiveSessionController = {
     try {
       const result = await LiveSessionServices.monthlyEventsCount();
       if (result) {
-        res.data = result;
+        const responseData = { success: true, data: result };
+        res.data = responseData;
         res.schema = schema.monthlyEventsCount;
       }
       next();

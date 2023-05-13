@@ -12,7 +12,7 @@ const ErrorMessages = Object.freeze({
   },
   JWT_INVALID: {
     success: false,
-    message: "Invalid Token",
+    message: "Invalid/Expired Token",
     httpStatusCode: 401,
   },
   JWT_EXPIRED: {

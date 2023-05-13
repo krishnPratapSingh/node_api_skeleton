@@ -9,8 +9,15 @@ const validateResponse = (req, res, next) => {
   if (!isValid) {
     const errors = validate.errors;
     console.log("Validation errors:", errors);
-    return res.status(500).json({ error: "Invalid response data" });
+    return res
+      .status(500)
+      .json({
+        success: false,
+        error: "Invalid response data",
+        httpStatusCode: 500,
+      });
   }
+  data.httpStatusCode = 200;
   res.json(data);
 };
 
