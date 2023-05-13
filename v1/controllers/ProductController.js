@@ -2,7 +2,7 @@
 import ProductServices from "../services/ProductServices";
 
 // Errors
-import ErrorManager from "../classes/ErrorManager";
+import ErrorManager from "../../utilities/ErrorManager";
 
 const ProductController = {
   // CRUD METHODS

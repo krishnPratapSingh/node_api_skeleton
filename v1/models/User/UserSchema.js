@@ -1,9 +1,9 @@
 // Database
-import Database from "../../classes/Database_Crud_db";
+import Database from "../../../utilities/Database_Crud_db";
 import mongoose from "mongoose";
 
 // Logger
-import Logger from "../../classes/Logger";
+import Logger from "../../../utilities/Logger";
 
 const userModel = {
   /**

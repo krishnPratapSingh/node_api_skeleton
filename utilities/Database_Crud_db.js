@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 // Logging
 import Logger from "./Logger";
 // Properties
-import properties from "../../properties.js";
+import properties from "../properties.js";
 
 // Start Import Models
 
-import ProductModel from "../models/Product/ProductModel";
-import UserModel from "../models/User/UserModel";
-import PermissionModel from "../models/Permission/PermissionModel";
+import ProductModel from "../v1/models/Product/ProductModel";
+import UserModel from "../v1/models/User/UserModel";
+import PermissionModel from "../v1/models/Permission/PermissionModel";
 
 // End Import Models
 

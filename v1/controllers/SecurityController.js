@@ -8,8 +8,8 @@ import jsonwebtoken from "jsonwebtoken";
 import UserServices from "../services/UserServices";
 
 // Errors
-import ErrorManager from "../classes/ErrorManager";
-import Errors from "../classes/Errors";
+import ErrorManager from "../../utilities/ErrorManager";
+import Errors from "../../utilities/Errors";
 
 // Response validation schema
 import schema from "../middlewares/validators/Security/responseSchema";

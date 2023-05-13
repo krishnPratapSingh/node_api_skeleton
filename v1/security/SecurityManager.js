@@ -5,7 +5,7 @@ import helmet from "helmet";
 // Properties
 import properties from "../../properties";
 // Errors
-import ErrorMessages from "../classes/ErrorMessages";
+import ErrorMessages from "../../utilities/ErrorMessages";
 // model
 import PermissionModel from "../models/Permission/PermissionModel";
 

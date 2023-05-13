@@ -1,5 +1,5 @@
-import Logger from "./v1/classes/Logger";
-import Server from "./v1/classes/Server";
+import Logger from "./utilities/Logger";
+import Server from "./utilities/Server";
 
 // Application start
 const start = async () => {

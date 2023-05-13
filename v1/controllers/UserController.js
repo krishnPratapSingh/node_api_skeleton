@@ -2,8 +2,8 @@
 import UserServices from "../services/UserServices";
 
 // Errors
-import Errors from "../classes/Errors";
-import ErrorManager from "../classes/ErrorManager";
+import Errors from "../../utilities/Errors";
+import ErrorManager from "../../utilities/ErrorManager";
 
 const UserController = {
   // CRUD METHODS

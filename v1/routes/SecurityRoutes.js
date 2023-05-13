@@ -11,7 +11,7 @@ import { authorize } from "../security/SecurityManager";
 import SecurityController from "../controllers/SecurityController";
 
 // Response validator
-import validateResponse from "../classes/AjvResponseValidation";
+import validateResponse from "../../utilities/AjvResponseValidation";
 
 const baseUrl = `${Properties.api}`;
 router.post(baseUrl + "/login", SecurityController.login, validateResponse);

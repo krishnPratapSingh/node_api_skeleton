@@ -1,5 +1,5 @@
 // Database
-import Database from "../../classes/Database_Crud_db";
+import Database from "../../../utilities/Database_Crud_db";
 import mongoose, { Schema } from "mongoose";
 
 const permissionModel = {
