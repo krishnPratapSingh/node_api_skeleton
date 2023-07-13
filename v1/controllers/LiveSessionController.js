@@ -1,11 +1,15 @@
 // Services
 import LiveSessionServices from "../services/LiveSessionServices";
+import EventSessionServices from "../services/EventSessionServices";
 
 // Errors
 import ErrorManager from "../../utilities/ErrorManager";
 
 // Response validation schema
 import schema from "../middlewares/validators/LiveSession/responseSchema";
+
+// Helper Methods
+import { generateDatesInRange } from "../../utilities/Helpers";
 
 const LiveSessionController = {
   // CRUD METHODS
@@ -73,15 +77,23 @@ const LiveSessionController = {
     }
   },
 
-  monthlyEventsCount: async (req, res, next) => {
+  eventsCount: async (req, res, next) => {
     try {
-      const result = await LiveSessionServices.monthlyEventsCount();
-      if (result) {
-        const responseData = { success: true, data: result };
-        res.data = responseData;
-        res.schema = schema.monthlyEventsCount;
-      }
-      next();
+      // const frequency = req.body.frequency
+      // const period = req.body.period
+
+      const result = await EventSessionServices.eventsCount();
+
+      const responseData = { success: true, data: result };
+
+      const dates = generateDatesInRange("2023-06-01", "2023-06-30");
+
+      responseData.data[0].dates = dates;
+      res.data = responseData;
+      res.send(responseData);
+      // res.schema = schema.monthlyEventsCount;
+
+      // next();
     } catch (err) {
       const safeErr = ErrorManager.getSafeError(err);
       res.status(safeErr.status).json(safeErr);

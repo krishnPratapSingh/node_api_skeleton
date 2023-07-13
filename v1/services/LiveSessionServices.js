@@ -36,7 +36,7 @@ const LiveSessionServices = {
     return await LiveSessionModel.delete(id);
   },
 
-  async monthlyEventsCount() {
+  async eventsCount() {
     return await LiveSessionModel.monthlyEventsCount();
   },
 };

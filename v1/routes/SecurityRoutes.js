@@ -15,7 +15,11 @@ import validateResponse from "../../utilities/AjvResponseValidation";
 
 const baseUrl = ``;
 router.post(baseUrl + "/login", SecurityController.login, validateResponse);
-router.post(baseUrl + "/verifyToken", SecurityController.verifyToken);
+router.post(
+  baseUrl + "/verifyToken",
+  SecurityController.verifyToken,
+  validateResponse
+);
 router.post(
   baseUrl + "/changePassword",
   authorize(),

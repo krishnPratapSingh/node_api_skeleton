@@ -12,39 +12,19 @@ const permissionModel = {
     /**
      * Product
      */
-    const permissionSchema = new mongoose.Schema({
-      liveSession: {
-        create: {
-          type: Boolean,
-          default: false,
-          required: true,
+    const permissionSchema = new mongoose.Schema(
+      {
+        // RELATIONS
+        _user: {
+          type: Schema.ObjectId,
+          ref: "User",
         },
-        read: {
-          type: Boolean,
-          default: false,
-          required: true,
-        },
-        update: {
-          type: Boolean,
-          default: false,
-          required: true,
-        },
-        delete: {
-          type: Boolean,
-          default: false,
-          required: true,
-        },
+        // EXTERNAL RELATIONS
+        /*
+         */
       },
-
-      // RELATIONS
-      _user: {
-        type: Schema.ObjectId,
-        ref: "User",
-      },
-      // EXTERNAL RELATIONS
-      /*
-       */
-    });
+      { strict: false }
+    );
 
     permissionModel.setModel(
       db.connection.model("Permission", permissionSchema)

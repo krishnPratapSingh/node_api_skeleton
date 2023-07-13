@@ -68,23 +68,18 @@ export const authorize = (permissions) => {
       const permissionsAllocated = await PermissionModel.getPermissionByUserId(
         req.user._id
       );
-      // const permissionsAllocated = [
-      //   "product_create",
-      //   "product_read",
-      //   "product_update",
-      //   "product_delete",
-      // ];
+      console.log("permissionsAllocated==>>", permissionsAllocated);
       console.log("permissions==>>", permissions);
       const permissionRequired = permissions;
-      if (
-        permissionRequired.every((val) =>
-          permissionsAllocated.permissions.includes(val)
-        )
-      ) {
-        console.log("hasPermission => true");
+      const hasPermission = permissionRequired.filter(
+        (prop) => !permissionsAllocated[prop]
+      );
+      if (hasPermission.length == 0) {
+        console.log("has permission");
+
         next();
       } else {
-        throw Error(JSON.stringify(ErrorMessages.NOT_ENOUGH_PERMISSION));
+        throw Error(JSON.stringify(ErrorMessages.FORBIDDEN));
       }
     } catch (err) {
       console.log("error in hasPermission ==>", err);

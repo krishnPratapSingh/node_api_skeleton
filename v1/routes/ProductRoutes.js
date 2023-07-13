@@ -20,7 +20,7 @@ const baseUrl = `/product`;
 router.post(
   baseUrl + "",
   authenticate(),
-  authorize(["product_create", "product_read"]),
+  authorize([`${Properties.ls_create}`]),
   validateCreateProduct,
   ProductController.create
 );
@@ -32,7 +32,7 @@ router.delete(
 );
 router.get(
   baseUrl + "/:id",
-  authorize([]),
+  authorize([`${Properties.ls_read}`]),
   validateProductId,
   ProductController.get
 );

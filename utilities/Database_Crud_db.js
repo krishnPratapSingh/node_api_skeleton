@@ -11,6 +11,7 @@ import ProductModel from "../v1/models/Product/ProductModel";
 import UserModel from "../v1/models/User/UserModel";
 import PermissionModel from "../v1/models/Permission/PermissionModel";
 import LiveSessionModel from "../v1/models/LiveSession/LiveSessionModel";
+import EventSessionModel from "../v1/models/EventSession/EventSessionModel";
 
 // End Import Models
 
@@ -30,6 +31,7 @@ class Database {
     UserModel.init();
     PermissionModel.init();
     LiveSessionModel.init();
+    EventSessionModel.init();
     // End Init Models
   }
 

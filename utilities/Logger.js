@@ -5,11 +5,11 @@ import winston from "winston";
  */
 class Logger {
   constructor() {
-    const errorStackFormat = winston.format(err => {
+    const errorStackFormat = winston.format((err) => {
       if (err.level == "error") {
         return Object.assign({}, err, {
           stack: err.stack,
-          message: err.message
+          message: err.message,
         });
       }
       return err;
@@ -25,14 +25,14 @@ class Logger {
             winston.format.colorize(),
             winston.format.json(),
             winston.format.printf(
-              info => `${info.timestamp} ${info.level}: ${info.message}`
+              (info) => `${info.timestamp} ${info.level}: ${info.message}`
             ),
             winston.format.simple()
           ),
           level: "info", // Local Dev to preview all logging events
-          handleExceptions: true // Show exceptions in the console
-        })
-      ]
+          handleExceptions: true, // Show exceptions in the console
+        }),
+      ],
     });
   }
 
@@ -54,7 +54,8 @@ class Logger {
 
   expressMiddleware(req, res, next) {
     console.log(
-      new Date().toLocaleString() + ` ${req.method} - ${req.url} `
+      new Date().toLocaleString() +
+        ` ${req.method} - ${req.url} - ${req.reqIdentifier} `
     );
     next();
   }

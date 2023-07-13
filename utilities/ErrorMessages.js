@@ -4,20 +4,24 @@
 const ErrorMessages = Object.freeze({
   UNKNOWN: { status: 500, message: "Unknown server error" },
   UNKNOWN_DB: { status: 500, message: "Unknown DB error" },
-  UNAUTHORIZED: { status: 401, message: "Unauthorized" },
+  UNAUTHORIZED: { httpStatusCode: 401, errorMessage: "Unauthorized" },
   NOT_ENOUGH_PERMISSION: {
     success: false,
-    msg: "Dont have enough permission to perform this action",
+    msg: "Dont have enough permission to perform this action.",
     httpStatusCode: 403,
   },
+  FORBIDDEN: {
+    httpStatusCode: 403,
+    errorMessage: "Dont have enough permission to perform this action.",
+    // errorCode: 403,
+    // errorData: { type: "object" },
+  },
   JWT_INVALID: {
-    success: false,
-    message: "Invalid/Expired Token",
+    errorMessage: "Invalid/Expired Token",
     httpStatusCode: 401,
   },
   JWT_EXPIRED: {
-    success: false,
-    message: "Token expired",
+    errorMessage: "Token expired",
     httpStatusCode: 401,
   },
   NO_TOKEN: { status: 403, message: "No token provided" },

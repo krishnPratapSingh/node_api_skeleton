@@ -23,31 +23,31 @@ router.post(
 );
 
 router.get(
-  baseUrl + "/monthlyEventsCount",
+  baseUrl + "/eventsCount",
   authenticate(),
-  authorize([]),
-  LiveSessionController.monthlyEventsCount,
+  authorize([`${Properties.ls_read}`]),
+  LiveSessionController.eventsCount,
   validateResponse
 );
 
 router.get(
   baseUrl + "/:id",
   authenticate(),
-  authorize([]),
+  authorize([`${Properties.ls_read}`]),
   LiveSessionController.get
 );
 
 router.delete(
   baseUrl + "/:id",
   authenticate(),
-  authorize([]),
+  authorize([`${Properties.ls_delete}`]),
   LiveSessionController.delete
 );
 
 router.get(
   baseUrl + "",
   authenticate(),
-  authorize([]),
+  authorize([`${Properties.ls_read}`]),
   LiveSessionController.list
 );
 

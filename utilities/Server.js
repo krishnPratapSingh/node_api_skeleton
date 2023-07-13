@@ -24,6 +24,9 @@ import ProductRoutes from "../v1/routes/ProductRoutes";
 import LiveSessionRoutes from "../v1/routes/LiveSessionRoutes";
 import PublicRoutes from "../v1/routes/PublicRoutes";
 
+// middleware
+import requestIdentifier from "../v1/middlewares/requestIdentifier";
+
 class Server {
   constructor() {
     this.app = express();
@@ -51,6 +54,7 @@ class Server {
     // Add parser
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
+    this.app.use(requestIdentifier);
     this.app.use(Logger.expressMiddleware);
 
     // Securitiy

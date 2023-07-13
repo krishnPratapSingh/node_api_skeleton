@@ -12,7 +12,11 @@ import ErrorManager from "../../utilities/ErrorManager";
 import Errors from "../../utilities/Errors";
 
 // Response validation schema
-import schema from "../middlewares/validators/Security/responseSchema";
+import {
+  login as loginResonseSchema,
+  verifyToken as verifyTokenResponse,
+  error,
+} from "../middlewares/validators/Security/responseSchema";
 
 const securityControllers = {
   /**
@@ -37,7 +41,7 @@ const securityControllers = {
         user.password = undefined;
 
         // schema for response validation
-        res.schema = schema.login;
+        res.schema = loginResonseSchema;
         res.data = user;
         next();
       } else {
@@ -54,7 +58,7 @@ const securityControllers = {
    * Verify JWT Token function
    *
    */
-  verifyToken: async (req, res) => {
+  verifyToken: async (req, res, next) => {
     try {
       let token = req.body.api_token;
       console.log("token ==>>", token);
@@ -62,11 +66,15 @@ const securityControllers = {
         let decoded = null;
         try {
           decoded = jsonwebtoken.verify(token, Properties.tokenSecret);
+          console.log("decoded ==>>", decoded);
         } catch (err) {
-          return res.json({
-            success: false,
-            mesage: "Failed to authenticate token",
-          });
+          res.data = {
+            httpStatusCode: 401,
+            errorMessage: "Failed to authenticate",
+          };
+          res.schema = error;
+          res.status(401);
+          next();
         }
         console.log("deocded ==>>", decoded);
         console.log("deocded ==>>", decoded.email);
@@ -74,13 +82,16 @@ const securityControllers = {
         let user = await UserServices.getByUsername(username);
         console.log("user ==>>", user);
         user.api_token = token;
-        res.json(user);
+        res.schema = verifyTokenResponse;
+        res.data = user;
+        next();
+        // res.json(user);
       } else {
         throw new Errors.NO_TOKEN();
       }
     } catch (err) {
       const safeErr = ErrorManager.getSafeError(err);
-      res.status(400).json(safeErr);
+      res.status(401).json(safeErr);
     }
   },
 
