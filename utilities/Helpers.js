@@ -23,4 +23,48 @@ function generateDatesInRange(startDate, endDate) {
   return dates;
 }
 
-export { generateConsecutiveDates, generateDatesInRange };
+function converDateToYyyyMmDd(dateString) {
+  // Split the string into individual dates based on the comma separator
+  const dateArray = dateString.split(",");
+
+  // Loop through each date string and convert it to a JavaScript Date object
+  const parsedDates = dateArray.map((dateStr) => {
+    // Decode the URI-encoded date string
+    const decodedDateStr = decodeURIComponent(dateStr);
+
+    // Parse the decoded date string into a Date object
+    const dateObj = new Date(decodedDateStr);
+
+    return dateObj;
+  });
+  return parsedDates;
+}
+
+function mapIntegersToMonthNames(X) {
+  const monthNames = [
+    "",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const Y = X.map((num) => monthNames[num]);
+
+  return Y;
+}
+
+export {
+  generateConsecutiveDates,
+  generateDatesInRange,
+  converDateToYyyyMmDd,
+  mapIntegersToMonthNames,
+};

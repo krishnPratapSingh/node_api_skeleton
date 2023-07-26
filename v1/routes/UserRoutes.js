@@ -5,26 +5,32 @@ const router = express.Router();
 import Properties from "../../properties";
 
 // Security
-import { authorize } from "../security/SecurityManager";
+import { authenticate, authorize } from "../security/SecurityManager";
 
 // Controller
 import UserController from "../controllers/UserController";
 
 const baseUrl = `/user`;
-router.post(
-  baseUrl + "/:id/changePassword",
-  authorize(["ADMIN"]),
-  UserController.changePassword
+
+router.get(
+  baseUrl + "/find-user-by-oid/:userId",
+  authenticate(),
+  authorize([[`${Properties.user_read}`]]),
+  UserController.findUser
 );
-router.post(baseUrl + "", authorize([]), UserController.create);
-router.delete(baseUrl + "/:id", authorize([]), UserController.delete);
-router.get(baseUrl + "/:id", authorize([]), UserController.get);
-router.get(baseUrl + "", authorize([]), UserController.list);
-router.post(baseUrl + "/:id", authorize([]), UserController.update);
-router.post(
-  baseUrl + "/:id/changePassword",
-  authorize(["ADMIN"]),
-  UserController.changePassword
+
+router.get(
+  baseUrl + "/find-user-by-email/:email",
+  authenticate(),
+  authorize([[`${Properties.user_read}`]]),
+  UserController.findUserByEmail
+);
+
+router.get(
+  baseUrl + "/find-user-by-ssoId/:ssoId",
+  authenticate(),
+  authorize([[`${Properties.user_read}`]]),
+  UserController.findUserBySsoId
 );
 
 export default router;

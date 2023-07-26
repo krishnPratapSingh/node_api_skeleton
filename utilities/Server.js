@@ -19,6 +19,7 @@ import Database_Crud_db from "./Database_Crud_db.js";
 
 // Routes v1
 import SecurityRoutes from "../v1/routes/SecurityRoutes";
+import FlutinUserRoutes from "../v1/routes/FlutinUserRoutes";
 import UserRoutes from "../v1/routes/UserRoutes";
 import ProductRoutes from "../v1/routes/ProductRoutes";
 import LiveSessionRoutes from "../v1/routes/LiveSessionRoutes";
@@ -72,6 +73,7 @@ class Server {
     this.app.use(`${Properties.api}/v1`, LiveSessionRoutes); // for livsession
     this.app.use(`${Properties.api}/v1`, ProductRoutes); // for products
     this.app.use(`${Properties.api}/v1`, UserRoutes); // for users
+    this.app.use(`${Properties.api}/v1`, FlutinUserRoutes); // for flutin users
     this.app.use(`${Properties.api}/v1`, PublicRoutes); // for public
   }
 }

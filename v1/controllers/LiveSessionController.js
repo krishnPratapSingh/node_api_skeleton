@@ -9,7 +9,7 @@ import ErrorManager from "../../utilities/ErrorManager";
 import schema from "../middlewares/validators/LiveSession/responseSchema";
 
 // Helper Methods
-import { generateDatesInRange } from "../../utilities/Helpers";
+import { mapIntegersToMonthNames } from "../../utilities/Helpers";
 
 const LiveSessionController = {
   // CRUD METHODS
@@ -59,7 +59,7 @@ const LiveSessionController = {
       if (result.results.length > 0) {
         res.json(result);
       } else {
-        res.json({ msg: "There are no products." });
+        res.json({ msg: "There are no events." });
       }
     } catch (err) {
       const safeErr = ErrorManager.getSafeError(err);
@@ -79,22 +79,35 @@ const LiveSessionController = {
 
   eventsCount: async (req, res, next) => {
     try {
-      // const frequency = req.body.frequency
-      // const period = req.body.period
+      const frequency = req.params.frequency;
+      const date = req.params.date;
+      const type = req.params.type;
 
-      const result = await EventSessionServices.eventsCount();
+      // splitting dates into startDate and endDate
+      const period = date.split(",");
+
+      // fetching results from DB
+      const result = await EventSessionServices.eventsCount(
+        period,
+        frequency,
+        type
+      );
+
+      console.log("result in eventsCount ==>>", result);
+
+      // replacing month number from month names
+      if (frequency == "MONTHLY") {
+        const monthNames = mapIntegersToMonthNames(result[0].dates);
+        console.log("monthNames ==>>", monthNames);
+        if (monthNames) {
+          result[0].dates = monthNames;
+        }
+      }
 
       const responseData = { success: true, data: result };
-
-      const dates = generateDatesInRange("2023-06-01", "2023-06-30");
-
-      responseData.data[0].dates = dates;
-      res.data = responseData;
       res.send(responseData);
-      // res.schema = schema.monthlyEventsCount;
-
-      // next();
     } catch (err) {
+      console.log("Error: in eventsCount controller:", err);
       const safeErr = ErrorManager.getSafeError(err);
       res.status(safeErr.status).json(safeErr);
     }

@@ -5,7 +5,7 @@ import Properties from "../../properties";
 import jsonwebtoken from "jsonwebtoken";
 
 // Sevices
-import UserServices from "../services/UserServices";
+import UserServices from "../services/FlutinUserServices";
 
 // Errors
 import ErrorManager from "../../utilities/ErrorManager";

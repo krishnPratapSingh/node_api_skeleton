@@ -8,6 +8,7 @@ import properties from "../properties.js";
 // Start Import Models
 
 import ProductModel from "../v1/models/Product/ProductModel";
+import FlutinUserModel from "../v1/models/User/FlutinUserModel";
 import UserModel from "../v1/models/User/UserModel";
 import PermissionModel from "../v1/models/Permission/PermissionModel";
 import LiveSessionModel from "../v1/models/LiveSession/LiveSessionModel";
@@ -29,6 +30,7 @@ class Database {
 
     ProductModel.init();
     UserModel.init();
+    FlutinUserModel.init();
     PermissionModel.init();
     LiveSessionModel.init();
     EventSessionModel.init();
@@ -42,7 +44,8 @@ class Database {
     Logger.info("Authenticating to the databases...");
     try {
       this.dbConnection_crud_db = await mongoose.connect(
-        "mongodb://" + properties.crud_db_dbUrl,
+        // "mongodb://" + properties.crud_db_dbUrl,
+        properties.crud_db_dbUrl,
         { useNewUrlParser: true }
       );
     } catch (err) {

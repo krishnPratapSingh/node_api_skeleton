@@ -1,4 +1,4 @@
-import UserSchema from "./UserSchema";
+import UserSchema from "./FlutinUserSchema";
 
 const queries = {
   // CRUD METHODS
@@ -7,8 +7,8 @@ const queries = {
     return await UserSchema.getModel().create(item);
   },
 
-  async get(queryObject) {
-    return await UserSchema.getModel().findOne(queryObject);
+  async get(id) {
+    return await UserSchema.getModel().findOne({ _id: id });
   },
 
   async list() {

@@ -1,24 +1,22 @@
 import EventSessionSchema from "./EventSessionSchema";
 
 const queries = {
-  async eventsCount() {
+  async eventsCount(period, frequency, type, groupBy) {
+    console.log("period[0] ==>>", period[0]);
+    console.log("period[1] ==>>", period[1]);
     return await EventSessionSchema.getModel().aggregate([
       {
         $match: {
           "eventSnapShot.lastStartDate": {
-            $gte: new Date("Thu, 01 Jun 2023 00:00:00 GMT"),
-            $lte: new Date("Fri, 30 Jun 2023 00:00:00 GMT"),
+            $gte: new Date(period[0]),
+            // $lte: new Date(period[1]),
+            $lt: new Date(new Date(period[1]).getTime() + 24 * 60 * 60 * 1000), // End date (next day)
           },
         },
       },
       {
         $group: {
-          _id: {
-            $dateToString: {
-              format: "%Y-%m-%d",
-              date: "$eventSnapShot.lastStartDate",
-            },
-          },
+          _id: groupBy,
           unique: {
             $addToSet: "$eventSnapShot._id",
           },
@@ -160,6 +158,9 @@ const queries = {
             $push: {
               $size: "$unique",
             },
+          },
+          dates: {
+            $push: "$_id",
           },
         },
       },

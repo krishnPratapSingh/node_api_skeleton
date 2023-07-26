@@ -1,5 +1,5 @@
 // Services
-import UserServices from "../services/UserServices";
+import UserServices from "../services/FlutinUserServices";
 
 // Errors
 import Errors from "../../utilities/Errors";
@@ -7,50 +7,6 @@ import ErrorManager from "../../utilities/ErrorManager";
 
 const UserController = {
   // CRUD METHODS
-
-  findUser: async (req, res) => {
-    try {
-      const userId = req.params.userId;
-      const user = await UserServices.findUser({ _id: userId });
-      const responseData = { success: true, data: user };
-      res.json(responseData);
-    } catch (err) {
-      const safeErr = ErrorManager.getSafeError(err);
-      res.status(safeErr.status).json(safeErr);
-    }
-  },
-
-  findUserByEmail: async (req, res) => {
-    try {
-      const email = req.params.email;
-      const ssoId = await UserServices.findUserByEmail(email);
-      var user;
-
-      if (ssoId) user = await UserServices.findUser({ ssoId: ssoId });
-      else throw new Error();
-      if (user && user._id) {
-        const responseData = { success: true, data: user };
-        res.json(responseData);
-      } else {
-        throw new Error();
-      }
-    } catch (err) {
-      const safeErr = ErrorManager.getSafeError(err);
-      res.status(safeErr.status).json(safeErr);
-    }
-  },
-
-  findUserBySsoId: async (req, res) => {
-    try {
-      const ssoId = req.params.ssoId;
-      const user = await UserServices.findUser({ ssoId: ssoId });
-      const responseData = { success: true, data: user };
-      res.json(responseData);
-    } catch (err) {
-      const safeErr = ErrorManager.getSafeError(err);
-      res.status(safeErr.status).json(safeErr);
-    }
-  },
 
   create: async (req, res) => {
     try {

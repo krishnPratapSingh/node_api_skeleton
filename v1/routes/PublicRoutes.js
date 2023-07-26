@@ -5,7 +5,7 @@ const router = express.Router();
 import Properties from "../../properties";
 
 // Controller
-import UserController from "../controllers/UserController";
+import UserController from "../controllers/FlutinUserController";
 
 const baseUrl = ``;
 

@@ -11,7 +11,7 @@ import PermissionModel from "../models/Permission/PermissionModel";
 
 // Middleware JWT
 export const authenticate = () => {
-  console.log("inside authenticate");
+  // console.log("inside authenticate");
 
   return [
     // Authenticate JWT token and attach user to request object (req.user)
@@ -59,17 +59,17 @@ export const authorize = (permissions) => {
   if (typeof permissions === "string") {
     permissions = [permissions];
   }
-  console.log("inside authorize", permissions);
+  // console.log("inside authorize", permissions);
 
   return async (req, res, next) => {
     try {
       let allowed = false;
-      console.log("inside has permission");
+      // console.log("inside has permission");
       const permissionsAllocated = await PermissionModel.getPermissionByUserId(
         req.user._id
       );
-      console.log("permissionsAllocated==>>", permissionsAllocated);
-      console.log("permissions==>>", permissions);
+      // console.log("permissionsAllocated==>>", permissionsAllocated);
+      // console.log("permissions==>>", permissions);
       const permissionRequired = permissions;
       const hasPermission = permissionRequired.filter(
         (prop) => !permissionsAllocated[prop]
