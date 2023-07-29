@@ -37,6 +37,10 @@ const EventSessionServices = {
       groupBy
     );
   },
+
+  async userEventStats(userId) {
+    return await EventSessionModel.userEventStats(userId);
+  },
 };
 
 export default EventSessionServices;

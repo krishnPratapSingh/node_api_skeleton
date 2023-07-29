@@ -55,7 +55,6 @@ const LiveSessionController = {
   list: async (req, res) => {
     try {
       const result = await LiveSessionServices.list(req.query);
-      console.log("result in list controller: ", result);
       if (result.results.length > 0) {
         res.json(result);
       } else {

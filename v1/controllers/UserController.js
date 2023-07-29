@@ -1,5 +1,6 @@
 // Services
 import UserServices from "../services/UserServices";
+import EventSessionServices from "../services/EventSessionServices";
 
 // Errors
 import Errors from "../../utilities/Errors";
@@ -47,6 +48,31 @@ const UserController = {
       const responseData = { success: true, data: user };
       res.json(responseData);
     } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+
+  userEventStats: async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await EventSessionServices.userEventStats(userId);
+      const responseData = { success: true, data: user };
+      res.json(responseData);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+
+  getemailFromSsoId: async (req, res) => {
+    try {
+      const ssoId = req.params.ssoId;
+      const email = await UserServices.getUserMailBySsoId(ssoId);
+      const responseData = { success: true, data: email };
+      res.json(responseData);
+    } catch (err) {
+      console.log("error in getUserEmailFromSSO ==>>", err);
       const safeErr = ErrorManager.getSafeError(err);
       res.status(safeErr.status).json(safeErr);
     }

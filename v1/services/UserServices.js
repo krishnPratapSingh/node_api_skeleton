@@ -34,6 +34,8 @@ const userServices = {
     return await UserModel.findOne({ username: username });
   },
 
+  // ===============================================================================================================================
+
   async getByUsernameAndPassword(username, password) {
     console.log("username: ", username);
     console.log("password: ", password);
@@ -80,6 +82,27 @@ const userServices = {
     } else {
       return null;
     }
+  },
+
+  async getUserMailBySsoId(ssoId) {
+    const userId = ssoId;
+    const appid = properties.appId;
+    // Create intra token
+    const intraToken = jsonwebtoken.sign(
+      {
+        appId: appid,
+      },
+      properties.jwtSecret,
+      { expiresIn: 60 }
+    );
+    const response = await axios({
+      method: "post",
+      url: properties.authHost + "/v1/sso/getUserData",
+      data: { userSsoId: userId },
+      headers: { appid: appid, intratoken: intraToken },
+    });
+    const userData = response.data.data.email;
+    return userData;
   },
 
   async updatePassword(idUser, password) {

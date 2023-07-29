@@ -22,15 +22,29 @@ router.get(
 router.get(
   baseUrl + "/find-user-by-email/:email",
   authenticate(),
-  authorize([[`${Properties.user_read}`]]),
+  authorize([`${Properties.user_read}`]),
   UserController.findUserByEmail
 );
 
 router.get(
   baseUrl + "/find-user-by-ssoId/:ssoId",
   authenticate(),
-  authorize([[`${Properties.user_read}`]]),
+  authorize([`${Properties.user_read}`]),
   UserController.findUserBySsoId
+);
+
+router.get(
+  baseUrl + "/get-uesr-email/:ssoId",
+  authenticate(),
+  authorize([`${Properties.user_read}`]),
+  UserController.getemailFromSsoId
+);
+
+router.get(
+  baseUrl + "/userEventStats/:userId",
+  authenticate(),
+  authorize([`${Properties.user_read}`, `${Properties.ls_read}`]),
+  UserController.userEventStats
 );
 
 export default router;

@@ -33,8 +33,6 @@ export const authenticate = () => {
 
           if (decodedUser) {
             req.user = decodedUser;
-            console.log("just before next");
-
             next();
           } else {
             throw Error(JSON.stringify(ErrorMessages.UNAUTHORIZED));
@@ -42,7 +40,8 @@ export const authenticate = () => {
         }
       } catch (err) {
         console.log("error in authenticate ==>>", err);
-        res.send(JSON.parse(err.message));
+        // res.send(JSON.parse(err.message));
+        res.status(401).json("Invalid Token");
       }
     },
   ];

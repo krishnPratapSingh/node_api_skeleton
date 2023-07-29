@@ -1,9 +1,8 @@
 import EventSessionSchema from "./EventSessionSchema";
+import mongoose from "mongoose";
 
 const queries = {
   async eventsCount(period, frequency, type, groupBy) {
-    console.log("period[0] ==>>", period[0]);
-    console.log("period[1] ==>>", period[1]);
     return await EventSessionSchema.getModel().aggregate([
       {
         $match: {
@@ -11,6 +10,7 @@ const queries = {
             $gte: new Date(period[0]),
             // $lte: new Date(period[1]),
             $lt: new Date(new Date(period[1]).getTime() + 24 * 60 * 60 * 1000), // End date (next day)
+            // $lt: new Date(period[1]),
           },
         },
       },
@@ -162,6 +162,113 @@ const queries = {
           dates: {
             $push: "$_id",
           },
+          totalValue: {
+            $sum: "$count",
+          },
+        },
+      },
+      {
+        $project: {
+          rtmp: 1,
+          nonRTMP: 1,
+          preRecorded: 1,
+          live: 1,
+          classicStudio: 1,
+          freeFlowStudio: 1,
+          count: 1,
+          unique: 1,
+          totalValue: 1,
+          dates: 1,
+          totalUniqueValue: {
+            $sum: "$unique",
+          },
+          totalRtmp: {
+            $sum: "$rtmp",
+          },
+          totalLive: {
+            $sum: "$live",
+          },
+          totalPreRecorded: {
+            $sum: "$preRecorded",
+          },
+        },
+      },
+    ]);
+  },
+
+  async userEventStats(userId) {
+    return await EventSessionSchema.getModel().aggregate([
+      {
+        $match: {
+          "eventSnapShot._artist": mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $group: {
+          _id: "$eventSnapShot._artist",
+          totalSessions: {
+            $sum: 1,
+          },
+          unique: {
+            $addToSet: "$eventSnapShot._id",
+          },
+          rtmpEvents: {
+            $sum: {
+              $cond: [
+                {
+                  $eq: ["$eventSnapShot.isDefaultSourceRTMP", true],
+                },
+                1,
+                0,
+              ],
+            },
+          },
+          preRecordedEvents: {
+            $sum: {
+              $cond: [
+                {
+                  $eq: ["$eventSnapShot.eventType", "preRecorded"],
+                },
+                1,
+                0,
+              ],
+            },
+          },
+          liveEvents: {
+            $sum: {
+              $cond: [
+                {
+                  $and: [
+                    {
+                      $eq: ["$eventSnapShot.isDefaultSourceRTMP", false],
+                    },
+                    {
+                      $eq: ["$eventSnapShot.eventType", "live"],
+                    },
+                  ],
+                },
+                1,
+                0,
+              ],
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          uniqueEventCount: {
+            $size: "$unique",
+          },
+        },
+      },
+      {
+        $project: {
+          liveEvents: 1,
+          preRecordedEvents: 1,
+          totalEvents: 1,
+          rtmpEvents: 1,
+          uniqueEventCount: 1,
+          totalSessions: 1,
         },
       },
     ]);
