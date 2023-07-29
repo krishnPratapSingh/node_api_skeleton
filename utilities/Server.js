@@ -24,6 +24,7 @@ import UserRoutes from "../v1/routes/UserRoutes";
 import ProductRoutes from "../v1/routes/ProductRoutes";
 import LiveSessionRoutes from "../v1/routes/LiveSessionRoutes";
 import PublicRoutes from "../v1/routes/PublicRoutes";
+import UserSubscriptionRoutes from "../v1/routes/UserSubscriptionRoutes";
 
 // middleware
 import requestIdentifier from "../v1/middlewares/requestIdentifier";
@@ -73,6 +74,7 @@ class Server {
     this.app.use(`${Properties.api}/v1`, LiveSessionRoutes); // for livsession
     this.app.use(`${Properties.api}/v1`, ProductRoutes); // for products
     this.app.use(`${Properties.api}/v1`, UserRoutes); // for users
+    this.app.use(`${Properties.api}/v1`, UserSubscriptionRoutes); // for flutin users
     this.app.use(`${Properties.api}/v1`, FlutinUserRoutes); // for flutin users
     this.app.use(`${Properties.api}/v1`, PublicRoutes); // for public
   }

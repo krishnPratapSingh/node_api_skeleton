@@ -22,4 +22,13 @@ module.exports = {
   user_read: process.env.USER_READ || "user_read",
   user_update: process.env.USER_UPDATE || "user_update",
   user_delete: process.env.USER_DELETE || "user_delete",
+  // permissions --> user subscription
+  userSubscription_create:
+    process.env.USER_SUBSCRIPTION_CREATE || "userSubscription_create",
+  userSubscription_read:
+    process.env.USER_SUBSCRIPTION_READ || "userSubscription_read",
+  userSubscription_update:
+    process.env.USER_SUBSCRIPTION_UPDATE || "userSubscription_update",
+  userSubscription_delete:
+    process.env.USER_SUBSCRIPTION_DELETE || "userSubscription_delete",
 };
