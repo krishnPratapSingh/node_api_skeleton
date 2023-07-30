@@ -16,6 +16,10 @@ const userModel = {
      * User
      */
     const userSchema = new mongoose.Schema({
+      _artist: {
+        type: Schema.ObjectId,
+        ref: "stripelogsCustom",
+      },
       channels: {
         type: "Object",
       },

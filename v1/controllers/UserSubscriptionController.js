@@ -10,7 +10,17 @@ import ErrorManager from "../../utilities/ErrorManager";
 const UserSubscriptionController = {
   findSubscription: async (req, res) => {
     try {
-    } catch (err) {}
+      const userId = req.params.userId;
+      const userSubscription =
+        await UserSubscriptionServices.findUserSubscriptionById({
+          _userId: userId,
+        });
+      const responseData = { success: true, data: userSubscription };
+      res.json(responseData);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
   },
 };
 

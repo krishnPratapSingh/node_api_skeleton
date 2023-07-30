@@ -12,6 +12,7 @@ const UserController = {
   findUser: async (req, res) => {
     try {
       const userId = req.params.userId;
+      console.log("userId==>>", userId);
       const user = await UserServices.findUser({ _id: userId });
       const responseData = { success: true, data: user };
       res.json(responseData);
