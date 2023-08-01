@@ -14,6 +14,7 @@ import PermissionModel from "../v1/models/Permission/PermissionModel";
 import LiveSessionModel from "../v1/models/LiveSession/LiveSessionModel";
 import EventSessionModel from "../v1/models/EventSession/EventSessionModel";
 import UserSubscriptionModel from "../v1/models/UserSubscription/UserSubscriptionModel";
+import MediaModel from "../v1/models/Media/MediaModel";
 
 // End Import Models
 
@@ -36,6 +37,7 @@ class Database {
     LiveSessionModel.init();
     EventSessionModel.init();
     UserSubscriptionModel.init();
+    MediaModel.init();
     // End Init Models
   }
 
