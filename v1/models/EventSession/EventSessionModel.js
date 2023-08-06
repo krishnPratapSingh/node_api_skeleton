@@ -2,17 +2,10 @@ import EventSessionSchema from "./EventSessionSchema";
 import mongoose from "mongoose";
 
 const queries = {
-  async eventsCount(period, frequency, type, groupBy) {
+  async eventsCount(match, period, frequency, type, groupBy) {
     return await EventSessionSchema.getModel().aggregate([
       {
-        $match: {
-          "eventSnapShot.lastStartDate": {
-            $gte: new Date(period[0]),
-            // $lte: new Date(period[1]),
-            $lt: new Date(new Date(period[1]).getTime() + 24 * 60 * 60 * 1000), // End date (next day)
-            // $lt: new Date(period[1]),
-          },
-        },
+        $match: match,
       },
       {
         $group: {

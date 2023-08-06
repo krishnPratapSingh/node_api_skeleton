@@ -20,7 +20,7 @@ router.get(
 );
 
 router.get(
-  baseUrl + "/list/:id",
+  baseUrl + "/list/:userId/:pageNumber",
   authenticate(),
   authorize([`${Properties.media_read}`]),
   MediaController.list

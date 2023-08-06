@@ -8,9 +8,6 @@ import ErrorManager from "../../utilities/ErrorManager";
 // Response validation schema
 import schema from "../middlewares/validators/LiveSession/responseSchema";
 
-// Helper Methods
-import { mapIntegersToMonthNames } from "../../utilities/Helpers";
-
 const LiveSessionController = {
   // CRUD METHODS
 
@@ -52,6 +49,28 @@ const LiveSessionController = {
     }
   },
 
+  liveSessionsByUser: async (req, res) => {
+    try {
+      const { currentPage = 1, pageSize = 20 } = req.params;
+      const result = await LiveSessionServices.listByUserArtsit(
+        {
+          _artist: req.params.userId,
+        },
+        currentPage,
+        pageSize
+      );
+      if (result) {
+        const data = { success: true, data: result };
+        res.json(data);
+      } else {
+        res.json({ msg: "No LiveSession found." });
+      }
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+
   list: async (req, res) => {
     try {
       const result = await LiveSessionServices.list(req.query);
@@ -81,6 +100,10 @@ const LiveSessionController = {
       const frequency = req.params.frequency;
       const date = req.params.date;
       const type = req.params.type;
+      var userId;
+      if (req.params.userId) {
+        userId = req.params.userId;
+      }
 
       // splitting dates into startDate and endDate
       const period = date.split(",");
@@ -89,19 +112,9 @@ const LiveSessionController = {
       const result = await EventSessionServices.eventsCount(
         period,
         frequency,
-        type
+        type,
+        userId
       );
-
-      console.log("result in eventsCount ==>>", result);
-
-      // replacing month number from month names
-      if (frequency == "MONTHLY") {
-        const monthNames = mapIntegersToMonthNames(result[0].dates);
-        console.log("monthNames ==>>", monthNames);
-        if (monthNames) {
-          result[0].dates = monthNames;
-        }
-      }
 
       const responseData = { success: true, data: result };
       res.send(responseData);

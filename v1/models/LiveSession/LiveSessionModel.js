@@ -9,13 +9,16 @@ const queries = {
     return await LiveSessionSchema.getModel().findOne({ _id: id });
   },
 
-  async list(limit, skipIndex) {
-    return await LiveSessionSchema.getModel()
-      .find()
-      .sort({ _id: 1 })
-      .limit(limit)
-      .skip(skipIndex)
-      .exec();
+  async countDocs(queryObject) {
+    return LiveSessionSchema.getModel().countDocuments(queryObject);
+  },
+
+  async list(queryObject, skipDocuments, pageSize) {
+    return LiveSessionSchema.getModel()
+      .find(queryObject)
+      .sort({ createdAt: -1 })
+      .skip(skipDocuments)
+      .limit(pageSize);
   },
 
   async update(item) {

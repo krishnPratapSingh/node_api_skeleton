@@ -23,7 +23,7 @@ router.post(
 );
 
 router.get(
-  baseUrl + "/eventsCount/:frequency/:type/:date",
+  baseUrl + "/eventsCount/:frequency/:type/:date/:userId?",
   authenticate(),
   authorize([`${Properties.ls_read}`]),
   LiveSessionController.eventsCount,
@@ -35,6 +35,13 @@ router.get(
   authenticate(),
   authorize([`${Properties.ls_read}`]),
   LiveSessionController.get
+);
+
+router.get(
+  baseUrl + "/liveSessionsByUser/:userId/:currentPage",
+  authenticate(),
+  authorize([`${Properties.ls_read}`]),
+  LiveSessionController.liveSessionsByUser
 );
 
 router.delete(

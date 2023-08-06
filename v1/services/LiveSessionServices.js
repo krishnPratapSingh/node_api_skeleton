@@ -10,6 +10,26 @@ const LiveSessionServices = {
     return await LiveSessionModel.get(id);
   },
 
+  async listByUserArtsit(item, currentPage, pageSize) {
+    const totalCount = await LiveSessionModel.countDocs(item);
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(totalCount / pageSize);
+    console.log("totalPages ==>>", totalPages);
+    // Calculate the number of documents to skip
+    const skipDocuments = (currentPage - 1) * pageSize;
+    const list = await LiveSessionModel.list(item, skipDocuments, pageSize);
+    console.log("list ==>>", list);
+
+    const result = {
+      totalCount,
+      pageSize,
+      currentPage,
+      totalPages,
+      data: list,
+    };
+    return result;
+  },
+
   async list(item) {
     try {
       console.log("in service list");
