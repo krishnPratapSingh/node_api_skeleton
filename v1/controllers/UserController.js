@@ -14,6 +14,14 @@ const UserController = {
       const userId = req.params.userId;
       console.log("userId==>>", userId);
       const user = await UserServices.findUser({ _id: userId });
+      var email;
+      if (user) {
+        email = await UserServices.getUserMailBySsoId(user.ssoId);
+      }
+      if (email) {
+        user.email = email;
+      }
+      console.log("user ==>>", user);
       const responseData = { success: true, data: user };
       res.json(responseData);
     } catch (err) {
@@ -31,6 +39,7 @@ const UserController = {
       if (ssoId) user = await UserServices.findUser({ ssoId: ssoId });
       else throw new Error();
       if (user && user._id) {
+        user.email = email;
         const responseData = { success: true, data: user };
         res.json(responseData);
       } else {
@@ -46,6 +55,13 @@ const UserController = {
     try {
       const ssoId = req.params.ssoId;
       const user = await UserServices.findUser({ ssoId: ssoId });
+      var email;
+      if (user) {
+        email = await UserServices.getUserMailBySsoId(ssoId);
+      }
+      if (email) {
+        user.email = email;
+      }
       const responseData = { success: true, data: user };
       res.json(responseData);
     } catch (err) {
@@ -58,6 +74,18 @@ const UserController = {
     try {
       const userId = req.params.userId;
       const user = await EventSessionServices.userEventStats(userId);
+      const responseData = { success: true, data: user };
+      res.json(responseData);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+
+  userAcquisitionStats: async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await UserServices.userEventStats(userId);
       const responseData = { success: true, data: user };
       res.json(responseData);
     } catch (err) {

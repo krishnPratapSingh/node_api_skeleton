@@ -14,6 +14,7 @@ const UserSubscriptionController = {
       const userSubscription =
         await UserSubscriptionServices.findUserSubscriptionById({
           _userId: userId,
+          status: "active",
         });
       const responseData = { success: true, data: userSubscription };
       res.json(responseData);

@@ -2,7 +2,7 @@ import UserSubscriptionModel from "../models/UserSubscription/UserSubscriptionMo
 
 const userSubscriptionServices = {
   async findUserSubscriptionById(item) {
-    return UserSubscriptionModel.findOne(item);
+    return UserSubscriptionModel.findOneAndPopulate(item);
   },
 };
 

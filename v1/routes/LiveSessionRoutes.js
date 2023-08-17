@@ -23,7 +23,7 @@ router.post(
 );
 
 router.get(
-  baseUrl + "/eventsCount/:frequency/:type/:date/:userId?",
+  baseUrl + "/eventsCount/:frequency/:type/:date/:timeZone/:userId?",
   authenticate(),
   authorize([`${Properties.ls_read}`]),
   LiveSessionController.eventsCount,

@@ -8,11 +8,15 @@ const queries = {
   },
 
   async get(queryObject) {
-    return await UserSchema.getModel().findOne(queryObject);
+    return await UserSchema.getModel().findOne(queryObject).lean();
   },
 
-  async list() {
-    return await UserSchema.getModel().find();
+  async list(queryObject) {
+    return await UserSchema.getModel().find(queryObject);
+  },
+
+  async listTestUsers(queryObject, projection) {
+    return await UserSchema.getModel().find(queryObject, projection);
   },
 
   async update(item) {

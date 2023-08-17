@@ -38,7 +38,7 @@ const userServices = {
     if (user) {
       // const isEqual = bcrypt.compareSync(password, user.password);
       const match = await bcrypt.compare(password, user.password);
-      console.log("match ==>>", match);
+      // console.log("match ==>>", match);
       user.password = undefined;
       if (match) {
         return user;

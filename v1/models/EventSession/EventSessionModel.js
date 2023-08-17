@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 const queries = {
   async eventsCount(match, period, frequency, type, groupBy) {
+    // console.log("match ==>>", match);
     return await EventSessionSchema.getModel().aggregate([
       {
         $match: match,

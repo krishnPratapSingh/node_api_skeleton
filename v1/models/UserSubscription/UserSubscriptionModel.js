@@ -32,6 +32,13 @@ const queries = {
   async findOne(item) {
     return await UserSubscriptionSchema.getModel().findOne(item).lean();
   },
+
+  async findOneAndPopulate(item) {
+    return await UserSubscriptionSchema.getModel()
+      .findOne(item)
+      .populate("subscription.planId")
+      .lean();
+  },
 };
 
 export default {

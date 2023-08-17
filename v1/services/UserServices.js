@@ -18,8 +18,17 @@ const userServices = {
     return await UserModel.get(id);
   },
 
-  async list() {
-    return await UserModel.list();
+  async list(item) {
+    return await UserModel.list(item);
+  },
+
+  async findTestUser() {
+    const testUser = await UserModel.listTestUsers(
+      { testUser: true },
+      { _id: 1 }
+    );
+    const objectIdArray = testUser.map((doc) => doc._id); //.toString()
+    return objectIdArray;
   },
 
   async update(item) {

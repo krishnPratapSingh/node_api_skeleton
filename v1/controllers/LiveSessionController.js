@@ -1,6 +1,7 @@
 // Services
 import LiveSessionServices from "../services/LiveSessionServices";
 import EventSessionServices from "../services/EventSessionServices";
+import UserServices from "../services/UserServices";
 
 // Errors
 import ErrorManager from "../../utilities/ErrorManager";
@@ -100,11 +101,17 @@ const LiveSessionController = {
       const frequency = req.params.frequency;
       const date = req.params.date;
       const type = req.params.type;
+      const timeZone = req.params.timeZone;
+      console.log("timeZone==>>", timeZone);
       var userId;
       if (req.params.userId) {
         userId = req.params.userId;
       }
 
+      // find test users
+      var testUser = [];
+      testUser = await UserServices.findTestUser();
+      // console.log("testUser==>>", testUser);
       // splitting dates into startDate and endDate
       const period = date.split(",");
 
@@ -113,7 +120,9 @@ const LiveSessionController = {
         period,
         frequency,
         type,
-        userId
+        userId,
+        timeZone,
+        testUser
       );
 
       const responseData = { success: true, data: result };

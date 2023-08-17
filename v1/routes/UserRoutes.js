@@ -47,4 +47,11 @@ router.get(
   UserController.userEventStats
 );
 
+router.get(
+  baseUrl + "/userAcquisitionStats/",
+  authenticate(),
+  authorize([`${Properties.user_read}`]),
+  UserController.userAcquisitionStats
+);
+
 export default router;

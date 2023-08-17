@@ -5,22 +5,80 @@ import { mapIntegersToMonthNames } from "../../utilities/Helpers";
 import mongoose from "mongoose";
 
 const EventSessionServices = {
-  async eventsCount(period, frequency, type, userId) {
+  async eventsCount(period, frequency, type, userId, timeZone, testUser) {
     var groupBy;
+    var periodStart;
+    var periodEnd;
+    var time;
+    var groupByDaily;
+    var groupByWeekly;
+    var groupByMonthly;
+    if (timeZone === "UTC") {
+      // date range UTC
+      time = {
+        $gte: new Date(`${period[0]}T00:00:00.000Z`),
+        $lte: new Date(`${period[1]}T23:59:59.999Z`),
+      };
+      // group by DAILY UTC
+      groupByDaily = "$eventSnapShot.lastStartDate";
+      // group by WEEKLY UTC
+      groupByWeekly = {
+        $dateFromParts: {
+          isoWeekYear: { $isoWeekYear: "$eventSnapShot.lastStartDate" },
+          isoWeek: { $isoWeek: "$eventSnapShot.lastStartDate" },
+          isoDayOfWeek: 2, // 1 for Sunday (start of the week), 7 for Saturday (end of the week)
+        },
+      };
+      // group by MONTHLY UTC
+      groupByMonthly = "$eventSnapShot.lastStartDate";
+    } else if (timeZone === "IST") {
+      // date range IST
+      periodStart = new Date(`${period[0]}T00:00:00.000Z`);
+      periodStart.setHours(
+        periodStart.getHours() + 5,
+        periodStart.getMinutes() + 30
+      );
+      periodEnd = new Date(`${period[1]}T23:59:59.999Z`);
+      periodEnd.setHours(periodEnd.getHours() + 5, periodEnd.getMinutes() + 30);
+      time = { $gte: periodStart, $lte: periodEnd };
+      // group by DAILY IST
+      groupByDaily = {
+        $add: ["$eventSnapShot.lastStartDate", 19800000], // 5 hours and 30 minutes in milliseconds
+      };
+      // group by WEEKLY IST
+      groupByWeekly = {
+        $dateFromParts: {
+          isoWeekYear: {
+            $isoWeekYear: {
+              $add: ["$eventSnapShot.lastStartDate", 19800000],
+            },
+          },
+          isoWeek: {
+            $isoWeek: { $add: ["$eventSnapShot.lastStartDate", 19800000] },
+          },
+          isoDayOfWeek: 2,
+        },
+      };
+      // group by MONTHLY IST
+      groupByMonthly = { $add: ["$eventSnapShot.lastStartDate", 19800000] };
+    }
     var match = {
-      "eventSnapShot.lastStartDate": {
-        $gte: new Date(period[0]),
-        $lt: new Date(new Date(period[1]).getTime() + 24 * 60 * 60 * 1000), // End date (next day)
-      },
+      "eventSnapShot.lastStartDate": time,
     };
     if (userId) {
       match["eventSnapShot._artist"] = mongoose.Types.ObjectId(userId);
+    } else {
+      if (testUser.length > 0) {
+        match["eventSnapShot._artist"] = {
+          $nin: testUser,
+        };
+      }
     }
     if (frequency == "DAILY") {
       groupBy = {
         $dateToString: {
           format: "%Y-%m-%d",
-          date: "$eventSnapShot.lastStartDate",
+          date: groupByDaily,
         },
       };
     }
@@ -28,19 +86,13 @@ const EventSessionServices = {
       groupBy = {
         $dateToString: {
           format: "%Y-%m-%d",
-          date: {
-            $dateFromParts: {
-              isoWeekYear: { $isoWeekYear: "$eventSnapShot.lastStartDate" },
-              isoWeek: { $isoWeek: "$eventSnapShot.lastStartDate" },
-              isoDayOfWeek: 1, // 1 for Sunday (start of the week), 7 for Saturday (end of the week)
-            },
-          },
+          date: groupByWeekly,
         },
       };
     }
     if (frequency == "MONTHLY") {
       groupBy = {
-        $month: "$eventSnapShot.lastStartDate",
+        $month: groupByMonthly,
       };
     }
     const result = await EventSessionModel.eventsCount(
